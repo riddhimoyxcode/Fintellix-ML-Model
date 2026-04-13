@@ -15,6 +15,7 @@ Endpoints:
 
 from __future__ import annotations
 
+import os
 import time
 from contextlib import asynccontextmanager
 
@@ -205,3 +206,14 @@ async def predict_batch(batch: BatchTransactionInput):
         flagged_fraud=result["flagged_fraud"],
         processing_time_ms=round(elapsed_ms, 2),
     )
+
+
+# ---------------------------------------------------------------------------
+# Local development entry-point  (python api.py)
+# In production on Render, gunicorn is used instead (see Procfile).
+# ---------------------------------------------------------------------------
+if __name__ == "__main__":
+    import uvicorn
+
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("api:app", host="0.0.0.0", port=port, reload=True)
