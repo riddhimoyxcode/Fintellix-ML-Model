@@ -1,0 +1,34 @@
+2026-04-13 12:56:22,709 | INFO     | train | Generating synthetic dataset: 50000 samples (fraud_ratio=0.0017)
+2026-04-13 12:56:24,392 | INFO     | train | Synthetic dataset saved -> C:\Users\LENOVO\Desktop\FINTELLIX\Fintellix-ML-Model\data\creditcard.csv (50000 rows)
+2026-04-13 12:56:24,396 | INFO     | data_preprocessing | Loading dataset from C:\Users\LENOVO\Desktop\FINTELLIX\Fintellix-ML-Model\data\creditcard.csv
+2026-04-13 12:56:24,715 | INFO     | data_preprocessing | Dataset shape: (50000, 32)
+2026-04-13 12:56:24,724 | INFO     | data_preprocessing | Class distribution:
+Class
+0    49914
+1       86
+Name: count, dtype: int64
+2026-04-13 12:56:24,725 | INFO     | data_preprocessing | Cleaning data ...
+2026-04-13 12:56:24,736 | INFO     | data_preprocessing | Dropped columns: ['id']
+2026-04-13 12:56:24,739 | INFO     | data_preprocessing | No missing values detected
+2026-04-13 12:56:24,826 | INFO     | data_preprocessing | Cleaned dataset shape: (50000, 31)
+2026-04-13 12:56:24,834 | INFO     | data_preprocessing | Features shape: (50000, 30) | Target shape: (50000,)
+2026-04-13 12:56:24,842 | INFO     | data_preprocessing | Scaled columns: ['Amount', 'Time']
+2026-04-13 12:56:24,869 | INFO     | data_preprocessing | Train: 40000 samples (fraud=0.17%) | Test: 10000 samples (fraud=0.17%)
+2026-04-13 12:56:24,869 | INFO     | data_preprocessing | Applying SMOTE (strategy=0.50) ...
+2026-04-13 12:56:27,358 | INFO     | data_preprocessing | After SMOTE - Total: 59896 | Fraud: 19965 (33.33%)
+2026-04-13 12:56:27,362 | INFO     | train | Estimated scale_pos_weight = 587.24
+2026-04-13 12:56:27,362 | INFO     | model_training | XGBClassifier built | scale_pos_weight=587.24
+2026-04-13 12:56:27,363 | INFO     | model_training | Training started ...
+2026-04-13 12:56:28,613 | INFO     | model_training | Training complete.
+2026-04-13 12:56:28,613 | INFO     | model_training | Evaluating model ...
+2026-04-13 12:56:28,659 | INFO     | model_training | Confusion: TP=16  FP=0  FN=1  TN=9983 | ROC-AUC=1.0000 | AP=0.9967 | F1-Fraud=0.9697 | Best-Thr=0.2130
+2026-04-13 12:56:28,665 | INFO     | model_training | Model saved -> C:\Users\LENOVO\Desktop\FINTELLIX\Fintellix-ML-Model\models\fraud_model.pkl
+2026-04-13 12:56:28,668 | INFO     | model_training | Scaler saved -> C:\Users\LENOVO\Desktop\FINTELLIX\Fintellix-ML-Model\models\amount_scaler.pkl
+2026-04-13 12:57:18,927 | INFO     | predict | Model loaded from C:\Users\LENOVO\Desktop\FINTELLIX\Fintellix-ML-Model\models\fraud_model.pkl
+2026-04-13 12:57:18,940 | INFO     | predict | Scaler loaded from C:\Users\LENOVO\Desktop\FINTELLIX\Fintellix-ML-Model\models\amount_scaler.pkl
+2026-04-13 12:57:18,943 | INFO     | predict | Prediction: Normal (prob=0.0000, thr=0.5000)
+2026-04-13 12:57:31,105 | INFO     | api | Starting Fintellix Fraud Detection API ...
+2026-04-13 12:57:32,787 | INFO     | predict | Model loaded from C:\Users\LENOVO\Desktop\FINTELLIX\Fintellix-ML-Model\models\fraud_model.pkl
+2026-04-13 12:57:32,788 | INFO     | predict | Scaler loaded from C:\Users\LENOVO\Desktop\FINTELLIX\Fintellix-ML-Model\models\amount_scaler.pkl
+2026-04-13 12:57:32,788 | INFO     | api | Model pre-loaded successfully.
+2026-04-13 12:57:47,589 | INFO     | predict | Prediction: Normal (prob=0.0000, thr=0.5000)
