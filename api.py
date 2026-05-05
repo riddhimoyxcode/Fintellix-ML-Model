@@ -25,6 +25,7 @@ from pydantic import BaseModel, Field
 
 from predict import predict_transaction, _ensure_model_loaded, set_threshold
 from config import CLASSIFICATION_THRESHOLD, get_logger
+from stock_predict import predict_stock
 
 logger = get_logger("api")
 
@@ -87,6 +88,17 @@ class HealthResponse(BaseModel):
     model_loaded: bool
     default_threshold: float
     version: str
+
+
+class StockPredictionInput(BaseModel):
+    symbol: str = Field(..., description="Stock ticker symbol (e.g., AAPL)")
+    days: int = Field(default=7, ge=1, le=30, description="Number of days to forecast")
+
+
+class StockPredictionResponse(BaseModel):
+    symbol: str
+    forecast: list[dict]
+    processing_time_ms: float
 
 
 # ---------------------------------------------------------------------------
@@ -204,6 +216,28 @@ async def predict_batch(batch: BatchTransactionInput):
         threshold_used=result["threshold_used"],
         total_transactions=result["total_transactions"],
         flagged_fraud=result["flagged_fraud"],
+        processing_time_ms=round(elapsed_ms, 2),
+    )
+
+
+@app.post("/predict/stock", response_model=StockPredictionResponse, tags=["Prediction"])
+async def predict_stock_price(req: StockPredictionInput):
+    """
+    Dynamically trains an ML model on recent historical data and predicts future prices.
+    """
+    t0 = time.perf_counter()
+    try:
+        predictions = predict_stock(req.symbol, req.days)
+    except ValueError as ve:
+        raise HTTPException(status_code=404, detail=str(ve))
+    except Exception as e:
+        logger.exception("Stock prediction failed")
+        raise HTTPException(status_code=500, detail=str(e))
+
+    elapsed_ms = (time.perf_counter() - t0) * 1000
+    return StockPredictionResponse(
+        symbol=req.symbol,
+        forecast=predictions,
         processing_time_ms=round(elapsed_ms, 2),
     )
 
