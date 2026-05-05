@@ -61,3 +61,12 @@ Name: count, dtype: int64
 2026-05-05 15:29:04,119 | INFO     | predict | Model loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\fraud_model.pkl
 2026-05-05 15:29:04,129 | INFO     | predict | Scaler loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\amount_scaler.pkl
 2026-05-05 15:29:04,130 | INFO     | api | Model pre-loaded successfully.
+2026-05-05 15:34:40,787 | ERROR    | market_data | Error fetching quote for QQQ.NS: 'PriceHistory' object has no attribute '_dividends'
+2026-05-05 15:34:44,633 | ERROR    | market_data | Error fetching quote for QQQ.BO: 'PriceHistory' object has no attribute '_dividends'
+2026-05-05 15:35:10,660 | INFO     | api | Starting stock prediction for RELIANCE.NSE for 7 days
+2026-05-05 15:35:30,523 | INFO     | api | Starting stock prediction for TCS.NS for 7 days
+2026-05-05 15:35:31,219 | INFO     | api | Successfully predicted 7 days for TCS.NS
+2026-05-05 18:51:41,635 | INFO     | api | Starting Fintellix Fraud Detection API ...
+2026-05-05 18:51:41,868 | INFO     | predict | Model loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\fraud_model.pkl
+2026-05-05 18:51:41,874 | INFO     | predict | Scaler loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\amount_scaler.pkl
+2026-05-05 18:51:41,874 | INFO     | api | Model pre-loaded successfully.

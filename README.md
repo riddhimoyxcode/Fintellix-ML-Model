@@ -1,22 +1,17 @@
-# Fintellix Fraud Detection System
+# Fintellix Intelligence Service — Machine Learning API
 
-A high-performance, production-ready fraud detection model for credit card transactions, powered by **XGBoost** and served via **FastAPI**.
+A specialized high-performance microservice that powers the AI-driven features of the Fintellix ecosystem. Built with **FastAPI** and **Python**, it provides real-time fraud detection and predictive stock market analysis.
 
-## 🏗 Project Structure
+## 🏗 Key Capabilities
 
-```
-Fintellix-ML-Model/
-├── config.py               # Central configuration (paths, hyperparams, logging)
-├── data_preprocessing.py   # Data loading, cleaning, SMOTE, train/test split
-├── model_training.py       # XGBoost training, evaluation, model export
-├── predict.py              # Prediction function (single & batch)
-├── train.py                # Main training orchestrator
-├── api.py                  # FastAPI REST service
-├── requirements.txt        # Python dependencies
-├── data/                   # Dataset directory (CSV files)
-├── models/                 # Saved model artifacts (.pkl)
-└── logs/                   # Training & API logs
-```
+### 🛡️ Fraud Detection (XGBoost)
+- **Model**: Gradient Boosted Trees (XGBoost) trained on 280,000+ transactions.
+- **Accuracy**: Optimized for high recall to identify fraudulent patterns in real-time.
+- **Features**: Analyzes 30 transaction features including Time, Amount, and V1-V28 PCA components.
+
+### 📈 Stock Market Intelligence
+- **AI Price Forecast**: Dynamically trains models on recent historical data to predict future price movements (7-day window).
+- **Market Data Proxy**: Acts as a resilient data bridge using `yfinance` to bypass datacenter IP restrictions, ensuring reliable data delivery for the Fintellix Client.
 
 ## 🚀 Quick Start
 
@@ -25,22 +20,9 @@ Fintellix-ML-Model/
 pip install -r requirements.txt
 ```
 
-### 2. Train the Model
-
-**With the real Kaggle dataset:**
-Place `creditcard.csv` in the `data/` directory, then:
+### 2. Train the Fraud Model
 ```bash
-python train.py
-```
-
-**With a custom dataset path:**
-```bash
-python train.py --data /path/to/creditcard.csv
-```
-
-**With synthetic data (for testing):**
-```bash
-python train.py --generate
+python train.py --generate # Or use your own creditcard.csv in data/
 ```
 
 ### 3. Launch the API
@@ -50,48 +32,21 @@ uvicorn api:app --host 0.0.0.0 --port 8000 --reload
 
 ## 📡 API Endpoints
 
-| Method | Endpoint         | Description                  |
-|--------|------------------|------------------------------|
-| GET    | `/`              | Service info                 |
-| GET    | `/health`        | Health / readiness check     |
-| GET    | `/docs`          | Interactive Swagger UI       |
-| POST   | `/predict`       | Single transaction prediction|
-| POST   | `/predict/batch` | Batch prediction             |
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/predict` | Single transaction fraud prediction |
+| POST | `/predict/stock` | AI-based stock price forecast (7 days) |
+| GET | `/market/quote/{symbol}` | Resilient live stock quote (yfinance proxy) |
+| GET | `/market/history/{symbol}` | 3-month historical data (yfinance proxy) |
+| GET | `/health` | Service health and model status check |
 
-### Example — Single Prediction
-```bash
-curl -X POST http://localhost:8000/predict \
-  -H "Content-Type: application/json" \
-  -d '{"features": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,100.0]}'
-```
+## 🛠 Tech Stack
+- **Framework**: [FastAPI](https://fastapi.tiangolo.com/) & [Uvicorn](https://www.uvicorn.org/)
+- **Machine Learning**: [XGBoost](https://xgboost.readthedocs.io/), [Scikit-learn](https://scikit-learn.org/)
+- **Data Processing**: [Pandas](https://pandas.pydata.org/), [NumPy](https://numpy.org/)
+- **Finance Data**: [yfinance](https://github.com/ranaroussi/yfinance)
 
-### Example — Batch Prediction
-```bash
-curl -X POST http://localhost:8000/predict/batch \
-  -H "Content-Type: application/json" \
-  -d '{"transactions": [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,100.0]], "threshold": 0.3}'
-```
-
-## 🧠 Model Details
-
-- **Algorithm:** XGBoost (Gradient Boosted Trees)
-- **Imbalance Handling:** SMOTE oversampling + `scale_pos_weight`
-- **Features:** 30 (V1–V28 PCA features + Time + Amount)
-- **Metrics Focus:** Recall for fraud detection class
-
-## 📊 Key Evaluation Metrics
-
-- **ROC-AUC** — overall discrimination ability
-- **Average Precision (PR-AUC)** — performance on imbalanced data
-- **F1-Score (Fraud class)** — harmonic mean of precision and recall
-- **Confusion Matrix** — TP, FP, FN, TN breakdown
-- **Optimal Threshold** — threshold that maximizes fraud F1-score
-
-## ⚙️ Configuration
-
-All parameters are centralized in `config.py`:
-- File paths
-- Train/test split ratio
-- SMOTE parameters
-- XGBoost hyperparameters
-- Logging configuration
+## ☁️ Deployment
+This service is designed to be deployed on platforms like **Render** or **AWS App Runner**.
+- **Procfile**: Included for Gunicorn deployment.
+- **Port**: Defaults to `8000` or the `$PORT` environment variable.

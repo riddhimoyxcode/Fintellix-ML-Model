@@ -31,4 +31,3 @@ data/*.csv
 # Uncomment the line below if you DON'T want to commit model files:
 # models/
 
-logs
