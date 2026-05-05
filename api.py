@@ -26,6 +26,7 @@ from pydantic import BaseModel, Field
 from predict import predict_transaction, _ensure_model_loaded, set_threshold
 from config import CLASSIFICATION_THRESHOLD, get_logger
 from stock_predict import predict_stock
+from market_data import get_live_quote, get_historical_prices
 
 logger = get_logger("api")
 
@@ -240,6 +241,22 @@ async def predict_stock_price(req: StockPredictionInput):
         forecast=predictions,
         processing_time_ms=round(elapsed_ms, 2),
     )
+
+@app.get("/market/quote/{symbol}", tags=["Market Data"])
+async def market_quote(symbol: str):
+    """Fetch live quote for a symbol."""
+    quote = get_live_quote(symbol)
+    if not quote:
+        raise HTTPException(status_code=404, detail="Quote not found or invalid symbol")
+    return quote
+
+@app.get("/market/history/{symbol}", tags=["Market Data"])
+async def market_history(symbol: str):
+    """Fetch 3-month historical data for a symbol."""
+    history = get_historical_prices(symbol)
+    if not history:
+        raise HTTPException(status_code=404, detail="History not found or invalid symbol")
+    return history
 
 
 # ---------------------------------------------------------------------------

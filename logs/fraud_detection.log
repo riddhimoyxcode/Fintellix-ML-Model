@@ -32,3 +32,28 @@ Name: count, dtype: int64
 2026-04-13 12:57:32,788 | INFO     | predict | Scaler loaded from C:\Users\LENOVO\Desktop\FINTELLIX\Fintellix-ML-Model\models\amount_scaler.pkl
 2026-04-13 12:57:32,788 | INFO     | api | Model pre-loaded successfully.
 2026-04-13 12:57:47,589 | INFO     | predict | Prediction: Normal (prob=0.0000, thr=0.5000)
+2026-05-05 10:42:43,746 | INFO     | api | Starting Fintellix Fraud Detection API ...
+2026-05-05 10:42:45,655 | INFO     | predict | Model loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\fraud_model.pkl
+2026-05-05 10:42:45,674 | INFO     | predict | Scaler loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\amount_scaler.pkl
+2026-05-05 10:42:45,674 | INFO     | api | Model pre-loaded successfully.
+2026-05-05 10:57:32,135 | INFO     | api | Starting stock prediction for TCS.NS for 7 days
+2026-05-05 10:57:38,459 | INFO     | api | Successfully predicted 7 days for TCS.NS
+2026-05-05 14:43:34,332 | INFO     | api | Starting Fintellix Fraud Detection API ...
+2026-05-05 14:43:36,387 | INFO     | predict | Model loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\fraud_model.pkl
+2026-05-05 14:43:36,405 | INFO     | predict | Scaler loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\amount_scaler.pkl
+2026-05-05 14:43:36,406 | INFO     | api | Model pre-loaded successfully.
+2026-05-05 14:46:07,209 | INFO     | api | Starting stock prediction for TCS.NS for 7 days
+2026-05-05 14:46:12,898 | INFO     | api | Successfully predicted 7 days for TCS.NS
+2026-05-05 14:55:47,350 | INFO     | api | Starting stock prediction for RELIANCE.NSE for 7 days
+2026-05-05 14:56:04,437 | INFO     | api | Starting stock prediction for RELIANCE.NSE for 7 days
+2026-05-05 14:57:01,420 | INFO     | api | Starting stock prediction for TCS.NS for 7 days
+2026-05-05 14:57:01,740 | INFO     | api | Successfully predicted 7 days for TCS.NS
+2026-05-05 15:14:17,466 | INFO     | api | Shutting down ...
+2026-05-05 15:14:50,163 | INFO     | api | Starting Fintellix Fraud Detection API ...
+2026-05-05 15:14:52,609 | INFO     | predict | Model loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\fraud_model.pkl
+2026-05-05 15:14:52,678 | INFO     | predict | Scaler loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\amount_scaler.pkl
+2026-05-05 15:14:52,682 | INFO     | api | Model pre-loaded successfully.
+2026-05-05 15:24:24,021 | INFO     | api | Starting Fintellix Fraud Detection API ...
+2026-05-05 15:24:25,455 | INFO     | predict | Model loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\fraud_model.pkl
+2026-05-05 15:24:25,467 | INFO     | predict | Scaler loaded from C:\Users\PRIYANSHU SINGHA ROY\OneDrive\Desktop\Fintellix\Fintellix-ML-Model\models\amount_scaler.pkl
+2026-05-05 15:24:25,467 | INFO     | api | Model pre-loaded successfully.
