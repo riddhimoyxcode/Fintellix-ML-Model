@@ -26,9 +26,9 @@ def predict_stock(symbol: str, days: int = 7) -> list[dict]:
     """
     logger.info(f"Starting stock prediction for {symbol} for {days} days")
     
-    # Fetch data (last 2 years is enough for a fast, responsive model)
+    # Fetch data (last 1 year is enough for a fast, responsive model)
     ticker = yf.Ticker(symbol)
-    df = ticker.history(period="2y")
+    df = ticker.history(period="1y")
     
     if df.empty or len(df) < 30:
         raise ValueError(f"Not enough historical data found for symbol: {symbol}")

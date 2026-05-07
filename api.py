@@ -141,17 +141,29 @@ async def root():
     return {
         "service": "Fintellix Fraud Detection API",
         "status": "online",
+        "uptime_robot": "ready",
         "docs": "/docs",
     }
+
+
+@app.get("/ping", tags=["Health"])
+async def ping():
+    """Ultra-fast endpoint for UptimeRobot pings."""
+    return "pong"
 
 
 @app.get("/health", response_model=HealthResponse, tags=["Health"])
 async def health_check():
     """Detailed health / readiness probe."""
-    from predict import _model
+    try:
+        from predict import _model
+        is_ready = _model is not None
+    except Exception:
+        is_ready = False
+        
     return HealthResponse(
-        status="healthy" if _model is not None else "model_not_loaded",
-        model_loaded=_model is not None,
+        status="healthy" if is_ready else "initializing",
+        model_loaded=is_ready,
         default_threshold=CLASSIFICATION_THRESHOLD,
         version="1.0.0",
     )
