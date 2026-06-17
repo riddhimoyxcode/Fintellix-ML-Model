@@ -11,11 +11,11 @@ def create_features(df, n_lags=5):
     """Create lagged features for time series prediction."""
     for i in range(1, n_lags + 1):
         df[f'close_lag_{i}'] = df['Close'].shift(i)
-    # Moving averages
-    df['ma_7'] = df['Close'].rolling(window=7).mean()
-    df['ma_14'] = df['Close'].rolling(window=14).mean()
-    # Volatility
-    df['volatility_7'] = df['Close'].rolling(window=7).std()
+    # Moving averages based on past closing prices (shifted by 1 to prevent target leak)
+    df['ma_7'] = df['Close'].shift(1).rolling(window=7).mean()
+    df['ma_14'] = df['Close'].shift(1).rolling(window=14).mean()
+    # Volatility based on past closing prices (shifted by 1 to prevent target leak)
+    df['volatility_7'] = df['Close'].shift(1).rolling(window=7).std()
     
     return df
 
@@ -61,8 +61,8 @@ def predict_stock(symbol: str, days: int = 7) -> list[dict]:
     predictions = []
     last_date = df.index[-1]
     
-    # We need the last row to seed the predictions
-    current_features = df.iloc[-1].copy()
+    # Track the exact rolling window of the last 14 closing prices
+    last_prices = df['Close'].tail(14).tolist()
     
     for i in range(1, days + 1):
         # Determine the next trading day (skip weekends for simplicity)
@@ -72,11 +72,20 @@ def predict_stock(symbol: str, days: int = 7) -> list[dict]:
             
         last_date = next_date
         
-        # Prepare input vector for prediction
-        input_data = current_features[features].to_frame().T
+        # Prepare exact features for the next day using the sliding window
+        features_dict = {}
+        for lag in range(1, n_lags + 1):
+            features_dict[f'close_lag_{lag}'] = last_prices[-lag]
+            
+        features_dict['ma_7'] = float(np.mean(last_prices[-7:]))
+        features_dict['ma_14'] = float(np.mean(last_prices[-14:]))
+        features_dict['volatility_7'] = float(np.std(last_prices[-7:], ddof=1))
+        
+        # Convert to DataFrame with columns matching training features
+        input_row = pd.DataFrame([features_dict])[features]
         
         # Predict next close
-        pred_price = float(model.predict(input_data)[0])
+        pred_price = float(model.predict(input_row)[0])
         
         # Save prediction
         predictions.append({
@@ -84,18 +93,8 @@ def predict_stock(symbol: str, days: int = 7) -> list[dict]:
             "price": round(pred_price, 2)
         })
         
-        # Update current_features for the NEXT iteration
-        # Shift lags
-        for lag in range(n_lags, 1, -1):
-            current_features[f'close_lag_{lag}'] = current_features[f'close_lag_{lag-1}']
-        current_features['close_lag_1'] = pred_price
-        
-        # Update MAs/Volatility (approximate using simple exponential decay or just holding them static for short horizon)
-        # For a short 7-day horizon, simple autoregression of lags is the main driver.
-        # We will update ma_7 with a simple approximation
-        current_features['ma_7'] = (current_features['ma_7'] * 6 + pred_price) / 7
-        current_features['ma_14'] = (current_features['ma_14'] * 13 + pred_price) / 14
-        # Volatility is held constant for short-term prediction simplicity
+        # Append predicted price to historical window for subsequent steps
+        last_prices.append(pred_price)
 
     logger.info(f"Successfully predicted {days} days for {symbol}")
     return predictions
